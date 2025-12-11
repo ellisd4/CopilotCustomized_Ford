@@ -160,6 +160,17 @@ export const products: Product[] = [
         sku: "CAT-TRACKER-001",
         unit: "piece",
         imgName: "tracker-mat.png"
+    },
+    {
+        productId: 14,
+        supplierId: 3,
+        name: "OctoCat Premium Collection Bundle",
+        description: "Premium collection featuring the classic OctoCat Mona figurine plus three exclusive variants: InvisiCat, DevCat, and GitCat. Includes collector's display stand and authenticity certificate.",
+        price: 149.99,
+        sku: "OCTO-BUNDLE-001",
+        unit: "bundle",
+        imgName: "octocat-bundle.png",
+        discount: 0.15
     }
 ];
 
