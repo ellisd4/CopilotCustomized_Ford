@@ -160,6 +160,17 @@ export const products: Product[] = [
         sku: "CAT-TRACKER-001",
         unit: "piece",
         imgName: "tracker-mat.png"
+    },
+    {
+        productId: 16,
+        supplierId: 2,
+        name: "SmartCat OctoCat Interactive Figurine",
+        description: "Revolutionary interactive OctoCat figurine with AI-powered GitHub integration. Connects to your repos, celebrates commits with light shows, and provides coding motivation. Features voice commands, LED animations, and wireless charging base.",
+        price: 199.99,
+        sku: "SMART-OCTO-001",
+        unit: "piece",
+        imgName: "smart-octocat.png",
+        discount: 0.10
     }
 ];
 
