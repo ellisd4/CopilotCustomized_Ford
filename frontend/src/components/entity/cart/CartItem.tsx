@@ -1,45 +1,37 @@
 import { useState } from 'react';
 import { useCart, CartItem as CartItemType } from '../../../context/CartContext';
-import { useTheme } from '../../../context/ThemeContext';
 
 interface CartItemProps {
   item: CartItemType;
+  index: number;
 }
 
-export default function CartItem({ item }: CartItemProps) {
-  const { updateCartItem, removeFromCart, loading } = useCart();
-  const { darkMode } = useTheme();
-  const [isUpdating, setIsUpdating] = useState(false);
+export default function CartItem({ item, index }: CartItemProps) {
+  const { removeFromCart, loading } = useCart();
+  const [quantity, setQuantity] = useState(item.quantity);
 
-  const handleQuantityChange = async (newQuantity: number) => {
+  const handleQuantityChange = (newQuantity: number) => {
     if (newQuantity < 1) return;
-    
-    setIsUpdating(true);
-    try {
-      await updateCartItem(item.cartItemId, newQuantity);
-    } catch (err) {
-      console.error('Failed to update quantity:', err);
-    } finally {
-      setIsUpdating(false);
-    }
+    setQuantity(newQuantity);
   };
 
   const handleRemove = async () => {
-    if (window.confirm('Remove this item from your cart?')) {
-      try {
-        await removeFromCart(item.cartItemId);
-      } catch (err) {
-        console.error('Failed to remove item:', err);
-      }
+    try {
+      await removeFromCart(item.cartItemId);
+    } catch (err) {
+      console.error('Failed to remove item:', err);
     }
   };
 
-  const itemTotal = item.product.price * item.quantity;
+  const itemTotal = item.product.price * quantity;
 
   return (
-    <div className={`flex items-center space-x-4 p-4 border-b last:border-b-0 ${darkMode ? 'border-gray-700' : 'border-gray-200'}`}>
+    <tr className="border-b border-gray-700">
+      {/* S. No. */}
+      <td className="px-4 py-6 text-white text-center">{index}</td>
+      
       {/* Product Image */}
-      <div className="flex-shrink-0">
+      <td className="px-4 py-6">
         <img 
           src={`/${item.product.imgName}`} 
           alt={item.product.name}
@@ -48,73 +40,60 @@ export default function CartItem({ item }: CartItemProps) {
             e.currentTarget.src = '/placeholder-product.png';
           }}
         />
-      </div>
+      </td>
 
-      {/* Product Details */}
-      <div className="flex-grow">
-        <h3 className={`font-semibold text-lg ${darkMode ? 'text-light' : 'text-gray-800'}`}>
-          {item.product.name}
-        </h3>
-        <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-          {item.product.description}
-        </p>
-        <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-          SKU: {item.product.sku}
-        </p>
-        <p className={`font-medium text-lg ${darkMode ? 'text-light' : 'text-gray-800'}`}>
-          ${item.product.price.toFixed(2)} each
-        </p>
-      </div>
+      {/* Product Name */}
+      <td className="px-4 py-6 text-white font-medium">
+        {item.product.name}
+      </td>
 
-      {/* Quantity Controls */}
-      <div className="flex items-center space-x-2">
-        <button
-          onClick={() => handleQuantityChange(item.quantity - 1)}
-          disabled={loading || isUpdating || item.quantity <= 1}
-          className={`w-8 h-8 rounded-md border flex items-center justify-center transition-colors ${
-            darkMode 
-              ? 'border-gray-600 text-gray-300 hover:bg-gray-700 disabled:opacity-50' 
-              : 'border-gray-300 text-gray-700 hover:bg-gray-100 disabled:opacity-50'
-          }`}
-        >
-          −
-        </button>
-        
-        <span className={`w-12 text-center font-medium ${darkMode ? 'text-light' : 'text-gray-800'}`}>
-          {isUpdating ? '...' : item.quantity}
-        </span>
-        
-        <button
-          onClick={() => handleQuantityChange(item.quantity + 1)}
-          disabled={loading || isUpdating}
-          className={`w-8 h-8 rounded-md border flex items-center justify-center transition-colors ${
-            darkMode 
-              ? 'border-gray-600 text-gray-300 hover:bg-gray-700 disabled:opacity-50' 
-              : 'border-gray-300 text-gray-700 hover:bg-gray-100 disabled:opacity-50'
-          }`}
-        >
-          +
-        </button>
-      </div>
+      {/* Unit Price */}
+      <td className="px-4 py-6 text-white font-semibold">
+        ${item.product.price.toFixed(0)}
+      </td>
 
-      {/* Item Total */}
-      <div className="flex flex-col items-end space-y-2">
-        <p className={`font-semibold text-lg ${darkMode ? 'text-light' : 'text-gray-800'}`}>
-          ${itemTotal.toFixed(2)}
-        </p>
-        
+      {/* Quantity */}
+      <td className="px-4 py-6">
+        <div className="flex items-center justify-center">
+          <input
+            type="number"
+            min="1"
+            value={quantity}
+            onChange={(e) => handleQuantityChange(parseInt(e.target.value) || 1)}
+            className="w-20 px-3 py-2 bg-gray-900 border border-gray-700 rounded-md text-white text-center focus:outline-none focus:border-green-600"
+          />
+        </div>
+      </td>
+
+      {/* Total */}
+      <td className="px-4 py-6 text-white font-semibold">
+        ${itemTotal.toFixed(0)}
+      </td>
+
+      {/* Remove */}
+      <td className="px-4 py-6 text-center">
         <button
           onClick={handleRemove}
           disabled={loading}
-          className={`text-sm px-3 py-1 rounded-md border transition-colors ${
-            darkMode 
-              ? 'border-red-600 text-red-400 hover:bg-red-600 hover:text-white disabled:opacity-50' 
-              : 'border-red-500 text-red-600 hover:bg-red-500 hover:text-white disabled:opacity-50'
-          }`}
+          className="text-green-500 hover:text-green-400 transition-colors disabled:opacity-50"
+          title="Remove item"
         >
-          Remove
+          <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            className="h-6 w-6" 
+            fill="none" 
+            viewBox="0 0 24 24" 
+            stroke="currentColor"
+          >
+            <path 
+              strokeLinecap="round" 
+              strokeLinejoin="round" 
+              strokeWidth={2} 
+              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" 
+            />
+          </svg>
         </button>
-      </div>
-    </div>
+      </td>
+    </tr>
   );
 }
