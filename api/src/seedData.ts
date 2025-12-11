@@ -160,6 +160,16 @@ export const products: Product[] = [
         sku: "CAT-TRACKER-001",
         unit: "piece",
         imgName: "tracker-mat.png"
+    },
+    {
+        productId: 13,
+        supplierId: 3,
+        name: "OctoCat Mona Figurine",
+        description: "A beautiful hand crafted figurine based on the GitHub OctoCat logo.",
+        price: 35.99,
+        sku: "MONA-001",
+        unit: "piece",
+        imgName: "octocat-mona.png"
     }
 ];
 
