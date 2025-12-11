@@ -160,6 +160,17 @@ export const products: Product[] = [
         sku: "CAT-TRACKER-001",
         unit: "piece",
         imgName: "tracker-mat.png"
+    },
+    {
+        productId: 15,
+        supplierId: 3,
+        name: "OctoCat Mona Limited Edition Series",
+        description: "Limited edition handcrafted OctoCat Mona figurine. Only 500 pieces worldwide. Each figurine is individually numbered and includes a holographic authenticity sticker. Perfect for collectors and GitHub enthusiasts.",
+        price: 75.99,
+        sku: "MONA-LE-001",
+        unit: "piece",
+        imgName: "octocat-mona-le.png",
+        stockLevel: 500
     }
 ];
 

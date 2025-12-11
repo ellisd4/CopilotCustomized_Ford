@@ -14,6 +14,7 @@ interface Product {
   unit: string;
   supplierId: number;
   discount?: number;
+  stockLevel?: number;
 }
 
 const fetchProducts = async (): Promise<Product[]> => {
@@ -125,6 +126,11 @@ export default function Products() {
                       {Math.round(product.discount * 100)}% OFF
                     </div>
                   )}
+                  {product.stockLevel && product.stockLevel <= 1000 && (
+                    <div className="absolute top-2 right-2 bg-gradient-to-r from-yellow-500 to-orange-500 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">
+                      LIMITED EDITION
+                    </div>
+                  )}
                 </div>
                 
                 <div className="p-4 flex flex-col flex-grow">
@@ -141,6 +147,12 @@ export default function Products() {
                         <span className="text-primary text-xl font-bold">${product.price.toFixed(2)}</span>
                       )}
                     </div>
+                    
+                    {product.stockLevel && product.stockLevel <= 1000 && (
+                      <div className={`text-sm ${darkMode ? 'text-orange-400' : 'text-orange-600'} font-semibold transition-colors duration-300`}>
+                        Only {product.stockLevel} left!
+                      </div>
+                    )}
                     
                     <div className="flex items-center justify-between">
                       <div className={`flex items-center space-x-3 ${darkMode ? 'bg-gray-700' : 'bg-gray-200'} rounded-lg p-1 transition-colors duration-300`}>
