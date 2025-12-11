@@ -161,6 +161,7 @@ export const products: Product[] = [
         unit: "piece",
         imgName: "tracker-mat.png"
     },
+    // Product IDs 13-14 reserved for future variations
     {
         productId: 15,
         supplierId: 3,
